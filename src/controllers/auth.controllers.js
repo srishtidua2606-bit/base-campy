@@ -12,11 +12,11 @@ const generateAccessAndRefreshToken = async (userId) => {
        const refreshToken = user.generateRefreshToken()
        user.refreshToken = refreshToken
        await user.save({validateBeforeSave: false})
-        // we are saving the refresh token in the database so that we can verify it when user sends it to us for generating new access token.
+       
        return {accessToken, refreshToken}
 
     }catch(error){
-            // console.log(error)
+           
             throw new ApiError(500, "Something went wrong")
     }
 
@@ -55,7 +55,7 @@ const registerUser = asyncHandler(async (req, res) => {
    .findById(user._id)
    .select(
     "-password -refreshToken -emailVerficationToken -emailVerificationExpiry"
-   )//things i want to haveeeee
+   )
 
    if(!createdUser){
     throw new ApiError(500, "Something went wrong while registering a user")
@@ -94,7 +94,7 @@ if (!user) {
    .findById(user._id)
    .select(
     "-password -refreshToken -emailVerificationToken -emailVerificationExpiry"
-   )//things i am not wanting to xhave
+   )
    console.log( user.emailVerificationExpiry)
     const options = {
         httpOnly : true,
@@ -120,7 +120,7 @@ if (!user) {
 
 const logoutUser = asyncHandler(async (req, res, next) => {
    await User.findByIdAndUpdate(
-        req.user._id, // request m joh user h uski id lelo
+        req.user._id, 
         {
             $set:
             {
@@ -128,7 +128,7 @@ const logoutUser = asyncHandler(async (req, res, next) => {
             }
         },
         {
-            new:true // give the most update and newest object
+            new:true 
         }
     );
     const options = {
@@ -194,7 +194,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
         )
 
 })
-//we can access the value from the body and now we will access it from the url itself.
+
 const resendEmailVerification = asyncHandler(async (req, res)=>{
     const user = await User.findById(req.user?._id)
 
@@ -205,7 +205,6 @@ const resendEmailVerification = asyncHandler(async (req, res)=>{
         throw new ApiError(409, "Email is already verified.")
     }
 
-    //send email again for verification
     const {unHashedToken, hashedToken, tokenExpiry} = user.generateTemporaryToken()
 
    user.emailVerificationToken = hashedToken
@@ -295,9 +294,9 @@ const forgotPasswordRequest = asyncHandler ( async(req, res) => {
     subject : "Password reset request",
     mailgenContent : forgotPasswordMailgenContent(
         user.username,
-        //  `${req.protocol}://${req.get("host")}/api/v1/users/verify-email/${unHashedToken}` 
+    
          `${process.env.FORGOT_PASSWORD_REDIRECT_URL}/${unHashedToken}` 
-         //can be done in either ways
+         
         )
 
     })
@@ -344,9 +343,7 @@ const resetForgotPassword = asyncHandler(async(req, res) => {
         .json(
             new ApiResponse(
             200,
-            {
-                // password:newPassword
-            },
+            {},
             "Password has been succesfully reset."
         )
         )
@@ -370,9 +367,7 @@ const changeCurrentPassword = asyncHandler(async(req, res) => {
         .json(
             new ApiResponse(
             200,
-            {
-                // password:newPassword
-            },
+            { },
             "Password has been succesfully changed.")
         )
 })

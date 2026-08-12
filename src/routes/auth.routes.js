@@ -31,8 +31,8 @@ const router = Router();
 router.route("/register").post(userRegisterValidator(), validate, registerUser)
 router.route("/login").post(userLoginValidator(), validate ,login)
 router.route("/verify-email/:verificationToken").get(verifyEmail) 
-//:verificationToken because we are getting verification token the url only.
 
+//Non-secure routes
 router.route("/refresh-token").post(refreshAccessToken)
 router.route("/forgot-password").post(userForgotPasswordValidator(), validate, forgotPasswordRequest)
 router.route("/reset-password/:resetToken").post(userResetForgotPasswordValidator(), validate, resetForgotPassword)
