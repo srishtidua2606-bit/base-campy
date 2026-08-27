@@ -85,7 +85,7 @@ const getTaskById = asyncHandler(async(req , res) => {
                 $lookup : {
                     from : "subtasks",
                     localField:"_id",
-                    foreingField: "task",
+                    foreignField: "task",
                     as : "subtasks",
                     pipeline: [
                         {

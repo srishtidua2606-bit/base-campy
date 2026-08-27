@@ -206,7 +206,7 @@ const getProjectMembers = asyncHandler(async (req, res) => {
    )
 })
 const updateMemberRole = asyncHandler(async (req, res) => {
-    const {projectId, userId} = req.param
+    const {projectId, userId} = req.params
     const {newRole} = req.body
 
     if(!AvailableUserRole.includes(newRole)){

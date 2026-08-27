@@ -110,7 +110,3 @@ export {
 };
 
 
-//MIDDLEWARE AND VALIDATION IS DONE BUT NOBODY IS READING OUR THESE THINGS SO OUR MIDDLEWARE AND VALIDATIONS WILL GO INTO ROUTES
-
- // pehle we make middleware who collects the errors and then we make validations which we want to have and then to display those we indulge in in our routers  but the process goes 
-// .post(userRegisterValidator, middleware , registerUser) so basically validations their work and all those errors get collected through middleware and it shows error if needed and then the registring the user part happens...
