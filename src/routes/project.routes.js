@@ -40,7 +40,7 @@ router
     )
     .delete(
         validateProjectPermission([UserRolesEnum.ADMIN]),
-        deleteProject()
+        deleteProject
 
     )
 router
@@ -56,6 +56,5 @@ router
     .route("/:projectId/members/:userId")
     .put(validateProjectPermission([UserRolesEnum.ADMIN]),updateMemberRole)
     .delete(validateProjectPermission([UserRolesEnum.ADMIN]), deleteMember)
-
 
 export default router

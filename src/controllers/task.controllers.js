@@ -92,7 +92,7 @@ const getTaskById = asyncHandler(async(req , res) => {
                             $lookup : {
                             from : "users",
                             localField:"createdBy",
-                            foreingField: "_id",
+                            foreignField: "_id",
                             as : "createdBy",
                             pipeline : [
                                 {
@@ -121,7 +121,7 @@ const getTaskById = asyncHandler(async(req , res) => {
             }
         
     ])
-    if ( !task || tasl.length == 0){
+    if ( !task || task.length == 0){
         throw new ApiError(404,"Task not found");
         
     }
