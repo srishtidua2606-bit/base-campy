@@ -48,7 +48,7 @@ const registerUser = asyncHandler(async (req, res) => {
     email : user?.email,
     subject : "Please verify your email",
     mailgenContent : emailVerficationMailgenContent(user.username,
-         `${req.protocol}://${req.get("host")}/api/v1/users/verify-email/${unHashedToken}`)
+         `${process.env.FRONTEND_URL || "http://localhost:5174"}/verify-email/${unHashedToken}`)
    });
 
    const createdUser = await User
@@ -208,13 +208,13 @@ const resendEmailVerification = asyncHandler(async (req, res)=>{
     const {unHashedToken, hashedToken, tokenExpiry} = user.generateTemporaryToken()
 
    user.emailVerificationToken = hashedToken
-   user.emailVerificationTokenExpiry = tokenExpiry
+   user.emailVerificationExpiry = tokenExpiry
    await user.save({validateBeforeSave: false})
    await sendEmail({
     email : user?.email,
     subject : "Please verify your email",
     mailgenContent : emailVerficationMailgenContent(user.username,
-         `${req.protocol}://${req.get("host")}/api/v1/users/verify-email/${unHashedToken}`)
+         `${process.env.FRONTEND_URL || "http://localhost:5174"}/verify-email/${unHashedToken}`)
    });
 
    return res

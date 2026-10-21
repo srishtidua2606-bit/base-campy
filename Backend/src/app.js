@@ -13,7 +13,7 @@ app.use(cookieParser());
 // cors configurations
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN?.split(",") || "http://locahost:5173",
+    origin: process.env.CORS_ORIGIN?.split(",") || "http://localhost:5174",
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -22,9 +22,9 @@ app.use(
  
 //  import the routes
 
-import healthCheckRouter from "./src/routes/healthcheck.routes.js";
-import authRouter from "./src/routes/auth.routes.js";
-import projectRouter from "./src/routes/project.routes.js";
+import healthCheckRouter from "./routes/healthcheck.routes.js";
+import authRouter from "./routes/auth.routes.js";
+import projectRouter from "./routes/project.routes.js";
 
 
 app.use("/api/v1/healthcheck", healthCheckRouter);

@@ -5,7 +5,7 @@ import { ApiResponse } from '../utils/api-response.js'
 import { ApiError } from '../utils/api-error.js'
 import { asyncHandler } from '../utils/async-handler.js'
 import mongoose from 'mongoose'
-import { AvailableUserRole } from '../utils/constants.js'
+import { AvailableUserRole , UserRolesEnum} from '../utils/constants.js'
 
 
 const getProjects = asyncHandler(async (req, res) => {
@@ -68,11 +68,11 @@ const getProjectById = asyncHandler(async (req, res) => {
     const project = await Project.findById(projectId)
     if (!project) {
         throw new ApiError(404, "Project not found")
+    }
         res.status(200)
             .json(
                 new ApiResponse(200, project, "Project fetched successfully")
             )
-    }
 })
 const createProject = asyncHandler(async (req, res) => {
     const { name, description } = req.body
