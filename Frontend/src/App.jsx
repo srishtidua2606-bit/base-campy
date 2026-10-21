@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "./pages/Register";
 import BasecampyLogo from "./assets/basecampy-logo.svg";
 import Login from "./pages/Login";
+import VerifyEmail from "./pages/VerifyEmail";
 
 const features = [
   {
@@ -351,6 +352,7 @@ export default function App() {
 
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/verify-email/:token" element={<VerifyEmail />} />
 
         <Route
           path="*"
