@@ -1,36 +1,25 @@
 
-import { useState } from "react";
+import { use, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BasecampyLogo from "../assets/basecampy-logo.svg";
-
+import useInput from "../hooks/useInput";
 import "./login.css";
-  
+
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function Login() {
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({
-    email: "",
-    username: "",
-    password: "",
-  });
+  const email = useInput("")
+  const username = useInput("", (value) =>
+    value.toLowerCase().trim())
+  const password = useInput("")
 
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  function handleChange(event) {
-    const { name, value } = event.target;
-
-    setForm((previous) => ({
-      ...previous,
-      [name]: name === "username" ? value.toLowerCase().trim() : value,
-    }));
-
-    setError("");
-  }
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -47,17 +36,17 @@ export default function Login() {
 
     try {
       const response = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  credentials: "include",
-  body: JSON.stringify({
-    email: form.email.trim(),
-    username: form.username,
-    password: form.password,
-  }),
-});
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+        email: email.value.trim(),
+        username: username.value,
+        password: password.value,
+}),
+      });
 
       const result = await response.json();
 
@@ -80,7 +69,7 @@ export default function Login() {
     } catch (err) {
       setError(
         err.message ||
-          "Unable to connect to Basecampy. Check whether your backend is running."
+        "Unable to connect to Basecampy. Check whether your backend is running."
       );
     } finally {
       setLoading(false);
@@ -169,9 +158,14 @@ export default function Login() {
                 type="email"
                 autoComplete="email"
                 placeholder="you@organization.com"
-                value={form.email}
-                onChange={handleChange}
+                value={email.value}
+                onChange={(event) => {
+                  email.onChange(event)
+                  setError("")
+                }}
                 required
+
+
               />
             </div>
 
@@ -183,8 +177,11 @@ export default function Login() {
                 type="text"
                 autoComplete="username"
                 placeholder="yourusername"
-                value={form.username}
-                onChange={handleChange}
+                value={username.value}
+                onChange={(e) => {
+                  username.onChange(e)
+                  setError("")
+                }}
                 required
               />
             </div>
@@ -202,8 +199,11 @@ export default function Login() {
                   type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   placeholder="Enter your password"
-                  value={form.password}
-                  onChange={handleChange}
+                  value={password.value}
+                  onChange={(event) => {
+                    password.onChange(event);
+                    setError("");
+                  }}
                   required
                 />
 

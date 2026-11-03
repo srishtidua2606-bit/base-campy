@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import BasecampyLogo from "./assets/basecampy-logo.svg";
 import Login from "./pages/Login";
 import VerifyEmail from "./pages/VerifyEmail";
+import AuthProvider from "./contexts/AuthProvider";
 
 const features = [
   {
@@ -334,7 +335,10 @@ function Footer() {
 
 export default function App() {
   return (
+    <>
     <BrowserRouter>
+      <AuthProvider>
+   
       <Routes>
         <Route
           path="/"
@@ -364,7 +368,10 @@ export default function App() {
           }
         />
       </Routes>
+       </AuthProvider>
     </BrowserRouter>
+    </>
+  
   );
 }
 
