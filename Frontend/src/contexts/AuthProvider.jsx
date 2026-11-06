@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {AuthContext} from "./AuthContext"
 
 function AuthProvider({children}){
@@ -15,10 +15,10 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000
                     method: "POST",
                     credentials : "include"
                 });
+                const data = await response.json()
                 if(!response.ok){
-                    console.log(response.mesage || "Session expired")
+                    throw new Error(data.message || "Session expired")
                 }
-                const data = response.json()
                 setUser(data.data)
                 setIsAuthenticated(true)
             }
