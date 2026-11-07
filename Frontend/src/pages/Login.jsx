@@ -4,12 +4,15 @@ import { Link, useNavigate } from "react-router-dom";
 import BasecampyLogo from "../assets/basecampy-logo.svg";
 import useInput from "../hooks/useInput";
 import "./login.css";
+import useAuth from "../contexts/AuthContext"
 
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function Login() {
   const navigate = useNavigate();
+
+  const { setUser, setIsAuthenticated } = useAuth();
 
   const email = useInput("")
   const username = useInput("", (value) =>
@@ -54,6 +57,8 @@ export default function Login() {
         throw new Error(
           result.message || "Unable to sign in. Check your details and try again."
         );
+        setUser(result.data.user);
+        setIsAuthenticated(true);
       }
 
       // The backend returns an accessToken in its response.

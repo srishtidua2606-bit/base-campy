@@ -21,7 +21,7 @@ function Dashboard() {
         isAuthenticated,
         setIsAuthenticated,
         loading: authLoading,
-        setLoading,
+       
 
     } = useAuth();
 
@@ -41,7 +41,7 @@ function Dashboard() {
         if (authLoading || !isAuthenticated) {
             return;
         }
-        async function fethProjects() {
+        async function fetchProjects() {
             setProjectLoading(true);
             setError("");
             try {
@@ -56,13 +56,13 @@ function Dashboard() {
                 }
                 setProjects(Array.isArray(result.data) ? result.data : []);
             } catch (error) {
-                setError(error.message);
-            } finally {
+    setError(error.message || "Something went wrong.");
+}finally {
                 setProjectLoading(false);
             }
         }
 
-        fethProjects();
+        fetchProjects();
     }, [authLoading, isAuthenticated]);
 
     const totalProjects = projects.length
@@ -214,12 +214,13 @@ function Dashboard() {
         </div>
       ) : (
         <div className="dashboard-project-grid">
-          {projects.slice(0, 6).map((projectData) => (
-            <ProjectCard
+          {projects.slice(0, 6).map((projectData) => {
+            return <ProjectCard
               key={projectData.project?._id}
               projectData={projectData}
             />
-          ))}
+          }
+        )}
         </div>
       )}
 
@@ -250,7 +251,7 @@ function Dashboard() {
                         <div className = "dashboard-empty-state">
                              <p>Loading your projects...</p>
                         </div>
-                    ): project.length === 0? (
+                    ): projects.length === 0? (
                         <div className = "dashboard-empty-state">
                             <h3>NO PROJECTS YET</h3>
                             <p>
