@@ -263,9 +263,10 @@ function Dashboard() {
                     ):(
                         <div className = "dashboard-project-grid">
                             {
-                                projects.map((projectData) => {
+                                projects.map((projectData) => (
                                     <ProjectCard key ={projectData.project?._id} projectData={projectData}/>
-                                })
+                                )
+                            )
                             }
 
                         </div>
@@ -281,9 +282,7 @@ function Dashboard() {
     </main>
   </div>
 );
- 
-       
-    
+  
 }
 
 export default Dashboard;

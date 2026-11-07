@@ -1,0 +1,26 @@
+.dashboard-navbar {
+  min-height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 40px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e4df;
+}
+.dashboard-user-avatar {
+  width: 42px;
+  height: 42px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background-color: #dceee8;
+  color: #176b5b;
+  font-weight: 800;
+}
+.dashboard-logout-button:hover {
+  border-color: #d98776;
+  background-color: #f6e5df;
+  color: #a54e3e;
+}

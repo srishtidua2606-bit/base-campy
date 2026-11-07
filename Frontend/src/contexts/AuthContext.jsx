@@ -7,5 +7,6 @@ export const AuthContext = createContext({
     loading:true
 });
 
-export const useAuth = () => useContext(AuthContext)
+const useAuth = () => useContext(AuthContext)
+export default useAuth;
 
