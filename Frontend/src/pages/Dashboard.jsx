@@ -20,7 +20,7 @@ function Dashboard(){
         setUser,
         isAuthenticated,
         setIsAuthenticated,
-        loading = authLoading,
+        loading : authLoading,
         setLoading,
 
     } = useAuth();
@@ -49,7 +49,7 @@ function Dashboard(){
                     method:"GET",
                     credentials: "include",
              } )
-             const result = response.json()
+             const result = await response.json()
 
              if(!response.ok){
                 throw new Error(result?.message || "Unable to fetch projects");
@@ -67,4 +67,24 @@ function Dashboard(){
 
     const totalProjects = projects.length
     const adminProjects = projects.filter((item) => item.role?.toLowerCase() === "admin").length
+
+    const totalMembers = projects.reduce((total, item) => total + (item.project?.members || 0) , 0)
+
+    async function handleLogout(){
+        try{
+            await fetch(`${API_BASE_URL}/api/v1/auth/logout`,{
+                method:"POST",
+                credentials:"include"
+            });
+        }catch(error){
+            console.error("Logout request failed", error)
+        }finally{
+            setUser(null)
+            setIsAuthenticated(false)
+            navigate("/login", {replace: true})
+        }
+    }
+    return(
+    <Navbar user= {user} onLogout={handleLogout}/>
+    )
 }
