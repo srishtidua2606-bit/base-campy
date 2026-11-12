@@ -1,5 +1,5 @@
 
-import { use, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BasecampyLogo from "../assets/basecampy-logo.svg";
 import useInput from "../hooks/useInput";
@@ -45,10 +45,10 @@ export default function Login() {
         },
         credentials: "include",
         body: JSON.stringify({
-        email: email.value.trim(),
-        username: username.value,
-        password: password.value,
-}),
+          email: email.value.trim(),
+          username: username.value,
+          password: password.value,
+        }),
       });
 
       const result = await response.json();
@@ -57,20 +57,20 @@ export default function Login() {
         throw new Error(
           result.message || "Unable to sign in. Check your details and try again."
         );
-        setUser(result.data.user);
-        setIsAuthenticated(true);
       }
 
-      // The backend returns an accessToken in its response.
-      // Keep it in memory for now; we'll implement shared auth state
-      // when we build the dashboard and protected routes.
-      navigate("/dashboard", {
-        replace: true,
-        state: {
-          user: result.data?.user,
-          accessToken: result.data?.accessToken,
-        },
-      });
+      // Update the shared authentication state
+      const loggedInUser = result.data?.user;
+
+      if (!loggedInUser) {
+        throw new Error("User information was not returned by the server.");
+      }
+
+      setUser(loggedInUser);
+      setIsAuthenticated(true);
+
+      // Navigate to dashboard
+      navigate("/dashboard", { replace: true });
     } catch (err) {
       setError(
         err.message ||

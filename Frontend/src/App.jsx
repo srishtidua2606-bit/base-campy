@@ -358,7 +358,7 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/verify-email/:token" element={<VerifyEmail />} />
-        <Route path = "/dashboard" element = {<Dashboard/>} />
+        <Route path = "/dashboard" element = {<Dashboard/>}  />
         <Route
           path="*"
           element={
