@@ -100,7 +100,9 @@ if (user.username !== username) {
    console.log( user.emailVerificationExpiry)
     const options = {
         httpOnly : true,
-        secure : true
+        secure: process.env.NODE_ENV === "production",
+        
+        sameSite: "lax"
     }
     return res
     .status(200)
