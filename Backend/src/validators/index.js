@@ -75,10 +75,19 @@ const userResetForgotPasswordValidator = () => {
 const createProjectValidator = () => {
     return [
         body("name")
+        .trim()
         .notEmpty()
         .withMessage("Name is required."),
+        
         body("description")
         .optional()
+        .trim(),
+
+        body("deadline")
+        .optional({values: "falsy"})
+        .isISO8601()
+        .withMessage("Please provide a valid deadline")
+        .toDate(),
     ]
 }
 const addMemberstoProjectValidator = () => {

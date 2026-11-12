@@ -5,7 +5,6 @@ const projectSchema = new Schema({
     name : {
         type : String,
         required : true,
-        unique : true,
         trim: true,
       
     },
@@ -13,8 +12,12 @@ const projectSchema = new Schema({
         type: String,
         
     },
+    deadline:{
+        type:Date,
+        default: null
+    },
     createdBy : {
-        type : Schema.Types.ObjectId, // i wil refer to another document.
+        type : Schema.Types.ObjectId, // it will refer to another document.
         ref : "User",
         required : true
     }

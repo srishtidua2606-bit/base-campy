@@ -74,11 +74,13 @@ const getProjectById = asyncHandler(async (req, res) => {
                 new ApiResponse(200, project, "Project fetched successfully")
             )
 })
+
 const createProject = asyncHandler(async (req, res) => {
-    const { name, description } = req.body
+    const { name, description , deadline} = req.body
     const project = await Project.create({
         name,
         description,
+        deadline: deadline || null,
         createdBy: new mongoose.Types.ObjectId(req.user._id),
     })
     await projectMember.create(
@@ -92,9 +94,10 @@ const createProject = asyncHandler(async (req, res) => {
     return res
         .status(201)
         .json(
-            new ApiResponse(201, "Project Created successfully")
+            new ApiResponse(201, project,"Project Created successfully")
         )
 })
+
 const updateProject = asyncHandler(async (req, res) => {
     const { name, description } = req.body
     const { projectId } = req.params
