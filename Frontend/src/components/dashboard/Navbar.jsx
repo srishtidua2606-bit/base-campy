@@ -2,7 +2,6 @@ function Navbar({ user, onLogout }) {
     const fullName = user?.fullName || user?.username || "User";
 
     const initials = fullName.split('')
-        .split("")
         .map((part) => part[0])
         .join("")
         .slice(0, 2)
@@ -26,7 +25,7 @@ function Navbar({ user, onLogout }) {
                         }
                     </div>
 
-                    <div classname="dashboard-user-info">
+                    <div className="dashboard-user-info">
                         <strong>{fullName} </strong>
                         <small>{user?.email || "Workspace member"}</small>
                     </div>
