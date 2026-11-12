@@ -1,11 +1,9 @@
 function Navbar({ user, onLogout }) {
     const fullName = user?.fullName || user?.username || "User";
 
-    const initials = fullName.split('')
-        .map((part) => part[0])
-        .join("")
-        .slice(0, 2)
-        .toUpperCase();
+    const words = fullName.trim().split('/\s+/');
+    const initials = words.length > 1 ? words.slice(0,2).map((word) => word[0]).join("").toUpperCase()
+    : fullName.slice(0,2).toUpperCase()
 
     return (
         <header className="dashboard-navbar">
@@ -20,7 +18,7 @@ function Navbar({ user, onLogout }) {
                 <div className="dashboard-user">
                     <div className="dashboard-user-avatar">
                         {
-                            user?.avatar?.url ? (<img src={user.avatar.url} alt="{fullName}" />)
+                            user?.avatar?.url && !user.avatar.url.includes("placehold.co")? (<img src={user.avatar.url} alt={fullName} />)
                                 : (<span>{initials}</span>)
                         }
                     </div>
