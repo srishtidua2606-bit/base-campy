@@ -743,3 +743,290 @@
     font-size: 11px;
   }
 }
+
+
+/* =========================================
+   11. CREATE PROJECT BUTTON
+========================================= */
+
+.dashboard-project-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dashboard-create-btn {
+  padding: 10px 15px;
+  border: 1px solid #176b5b;
+  border-radius: 9px;
+  background-color: #176b5b;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dashboard-create-btn:hover {
+  background-color: #125648;
+  border-color: #125648;
+  transform: translateY(-1px);
+}
+
+
+/* =========================================
+   12. CREATE PROJECT MODAL
+========================================= */
+
+/* The full-screen background behind the popup */
+
+.project-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+  background-color: rgba(23, 43, 58, 0.55);
+  backdrop-filter: blur(3px);
+}
+
+/* The actual popup box */
+
+.project-modal {
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  padding: 30px;
+  border: 1px solid #e2e4df;
+  border-radius: 18px;
+
+  background-color: #ffffff;
+  box-shadow: 0 20px 60px rgba(23, 43, 58, 0.2);
+
+  animation: modal-appear 0.25s ease-out;
+}
+
+/* Small entrance animation */
+
+@keyframes modal-appear {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+/* =========================================
+   13. MODAL HEADER
+========================================= */
+
+.project-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+
+  margin-bottom: 26px;
+}
+
+.project-modal-header h2 {
+  margin: 0;
+  color: #172b3a;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.project-modal-header p {
+  margin: 8px 0 0;
+  color: #65737d;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.project-modal-close {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+
+  display: grid;
+  place-items: center;
+
+  border: none;
+  border-radius: 9px;
+  background-color: #f6f4ef;
+  color: #65737d;
+
+  font-size: 23px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.project-modal-close:hover {
+  background-color: #f6e5df;
+  color: #a54e3e;
+}
+
+
+/* =========================================
+   14. PROJECT FORM
+========================================= */
+
+.project-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  margin-bottom: 19px;
+}
+
+.project-form-group label {
+  color: #20313d;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.project-form-group input,
+.project-form-group textarea {
+  width: 100%;
+  padding: 12px 13px;
+
+  border: 1px solid #e2e4df;
+  border-radius: 9px;
+
+  background-color: #ffffff;
+  color: #20313d;
+
+  font-family: inherit;
+  font-size: 12px;
+
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.project-form-group input:focus,
+.project-form-group textarea:focus {
+  border-color: #176b5b;
+  box-shadow: 0 0 0 3px rgba(23, 107, 91, 0.1);
+}
+
+.project-form-group input::placeholder,
+.project-form-group textarea::placeholder {
+  color: #a0a9ad;
+}
+
+.project-form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+
+/* =========================================
+   15. FORM ERROR
+========================================= */
+
+.project-form-error {
+  margin: 0 0 16px;
+  padding: 11px 13px;
+
+  border: 1px solid #edc9be;
+  border-radius: 8px;
+
+  background-color: #f6e5df;
+  color: #a54e3e;
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+
+/* =========================================
+   16. MODAL ACTION BUTTONS
+========================================= */
+
+.project-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 11px;
+
+  margin-top: 25px;
+  padding-top: 18px;
+  border-top: 1px solid #e2e4df;
+}
+
+.project-cancel-btn,
+.project-create-btn {
+  padding: 11px 17px;
+  border-radius: 9px;
+
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.project-cancel-btn {
+  border: 1px solid #e2e4df;
+  background-color: #ffffff;
+  color: #65737d;
+}
+
+.project-cancel-btn:hover {
+  background-color: #f6f4ef;
+}
+
+.project-create-btn {
+  border: 1px solid #176b5b;
+  background-color: #176b5b;
+  color: #ffffff;
+}
+
+.project-create-btn:hover:not(:disabled) {
+  background-color: #125648;
+}
+
+.project-create-btn:disabled,
+.project-cancel-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+/* =========================================
+   17. MODAL RESPONSIVENESS
+========================================= */
+
+@media (max-width: 600px) {
+  .dashboard-project-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .project-modal {
+    padding: 23px 19px;
+  }
+
+  .project-modal-header h2 {
+    font-size: 19px;
+  }
+
+  .project-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .project-cancel-btn,
+  .project-create-btn {
+    width: 100%;
+  }
+}

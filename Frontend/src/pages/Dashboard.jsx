@@ -7,7 +7,7 @@ import Navbar from "../components/dashboard/Navbar";
 import Sidebar from "../components/dashboard/Sidebar";
 import ProjectCard from "../components/dashboard/ProjectCard";
 import StatCard from "../components/dashboard/StatCard";
-
+import CreateProjectModal from "../components/dashboard/CreateProjectModal";
 import "./Dashboard.css";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
@@ -29,6 +29,9 @@ function Dashboard() {
     const [projectLoading, setProjectLoading] = useState(true);
     const [error, setError] = useState("");
     const [activeSection, setActiveSection] = useState("overview");
+
+    //modal visibility
+    const [showCreateModal, setShowCreateModal] = useState(false)
 
     useEffect(() => {
         if (!authLoading && !isAuthenticated) {
@@ -182,7 +185,10 @@ function Dashboard() {
 
           <p>Keep track of the work you're part of.</p>
         </div>
-
+        <div className="dashboard-project-actions">
+              <button className="dashboard-create-btn" onClick={() => setShowCreateModal(true)}>
+                + Create Project
+              </button>
         <button
           type="button"
           className="dashboard-view-all"
@@ -190,6 +196,7 @@ function Dashboard() {
         >
           View all projects
         </button>
+      </div>
       </div>
 
       {/* Error state */}
@@ -214,7 +221,7 @@ function Dashboard() {
         </div>
       ) : (
         <div className="dashboard-project-grid">
-          {projects.slice(0, 6).map((projectData) => {
+          {projects.slice(0, 3).map((projectData) => {
             return <ProjectCard
               key={projectData.project?._id}
               projectData={projectData}
@@ -280,8 +287,20 @@ function Dashboard() {
       </div>
 
     </main>
+    {showCreateModal && (
+  <CreateProjectModal onClose={() => setShowCreateModal(false)}
+    onProjectCreated = {(newProject) => {
+      setProjects((prevProjects) => [
+        { project: newProject, role : "ADMIN"},
+        ...prevProjects
+      ]);
+    }}
+  />
+)}
   </div>
 );
+
+
   
 }
 
