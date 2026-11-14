@@ -1,9 +1,10 @@
 function ProjectCard({projectData}){
+    console.log(projectData)
     const project = projectData.project;
-    const role = project.role || "Member"
-    const projectName = projectData?.name || "Untitled Project";
+    const role = projectData.role || "Member"
+    const projectName = project?.name || "Untitled Project";
     
-    const description = projectData?.description || "No description provided";
+    const description = project?.description || "No description provided";
 
     const memberCount = project?.members ?? 0;
     const formattedDate = project?.createdAt? new Date(project.createdAt).toLocaleDateString("en-IN",{
@@ -18,11 +19,11 @@ function ProjectCard({projectData}){
                     {projectName.charAt(0).toUpperCase()}
 </div>
  <span className={`project-role role-${role.toLowerCase()}`}>
-          {role}
+          {role.toUpperCase()}
         </span>
             </div>
 
-            <div className = "project-card=content">
+            <div className = "project-card-content">
                 <h3>{projectName}</h3>
                 <p>{description}</p>
             </div>

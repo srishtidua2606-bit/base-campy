@@ -856,11 +856,12 @@
 
 .project-modal-close {
   width: 34px;
-  height: 34px;
+  height: auto;
   flex-shrink: 0;
 
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   border: none;
   border-radius: 9px;
