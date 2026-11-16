@@ -8,61 +8,133 @@ import mongoose from 'mongoose'
 import { AvailableUserRole , UserRolesEnum} from '../utils/constants.js'
 
 
+// const getProjects = asyncHandler(async (req, res) => {
+//     const projects = await projectMember.aggregate(
+//         [
+//             {
+//                 $match: {
+//                     user: new mongoose.Types.ObjectId(req.user._id),
+//                 },
+//             },
+//             {
+//                 $lookup: {
+//                     from: "projects",
+//                     localField: "project",
+//                     foreignField: "_id",
+//                     as: "projects",
+//                     pipeline: [
+//                         {
+//                             $lookup: {
+//                                 from: "projectmembers",
+//                                 localField: "_id",
+//                                 foreignField: "project",
+//                                 as: "projectmembers"
+//                             }
+//                         }, {
+//                             $addFields: {
+//                                 members: {
+//                                     $size: "$projectmembers"
+//                                 }
+//                             }
+//                         }
+//                     ]
+
+//                 }
+//             },
+//             {
+//                 $unwind: "$projects"
+//             }, {
+//                 $project: {
+//                     project: {
+//                         _id: 1,
+//                         name: 1,
+//                         description: 1,
+//                         members: 1,
+//                         createdAt: 1,
+//                         createdBy: 1,
+
+//                     },
+//                     role: 1,
+//                     _id: 0
+//                 }
+//             }
+//         ]
+//     )
+//     return res.status(200)
+//         .json(new ApiResponse(200, projects, "Projects fetched successfuly"))
+// })
+
 const getProjects = asyncHandler(async (req, res) => {
-    const projects = await projectMember.aggregate(
-        [
-            {
-                $match: {
-                    user: new mongoose.Types.ObjectId(req.user._id),
-                },
-            },
-            {
-                $lookup: {
-                    from: "projects",
-                    localField: "project",
-                    foreignField: "_id",
-                    as: "projects",
-                    pipeline: [
-                        {
-                            $lookup: {
-                                from: "projectmembers",
-                                localField: "_id",
-                                foreignField: "project",
-                                as: "projectmembers"
-                            }
-                        }, {
-                            $addFields: {
-                                members: {
-                                    $size: "$projectmembers"
-                                }
-                            }
-                        }
-                    ]
+  const projects = await projectMember.aggregate([
+    // Stage 1: Get memberships of the logged-in user
+    {
+      $match: {
+        user: new mongoose.Types.ObjectId(req.user._id),
+      },
+    },
 
-                }
-            },
-            {
-                $unwind: "$projects"
-            }, {
-                $project: {
-                    project: {
-                        _id: 1,
-                        name: 1,
-                        description: 1,
-                        members: 1,
-                        createdAt: 1,
-                        createdBy: 1,
+    // Stage 2: Fetch the corresponding project documents
+    {
+      $lookup: {
+        from: "projects",
+        localField: "project",
+        foreignField: "_id",
+        as: "projects",
 
-                    },
-                    role: 1,
-                    _id: 0
-                }
-            }
-        ]
+        pipeline: [
+          // Stage 3: Fetch all membership records of each project
+          {
+            $lookup: {
+              from: "projectmembers",
+              localField: "_id",
+              foreignField: "project",
+              as: "projectmembers",
+            },
+          },
+
+          // Stage 4: Calculate total number of members
+          {
+            $addFields: {
+              members: {
+                $size: "$projectmembers",
+              },
+            },
+          },
+        ],
+      },
+    },
+
+    // Stage 5: Convert the projects array into individual documents
+    {
+      $unwind: "$projects",
+    },
+    {
+  $sort: {
+    "projects.createdAt": -1
+  }
+},
+    
+
+    // Stage 6: Shape the final response
+    {
+      $project: {
+        _id: 0,
+        project: "$projects",
+        role: 1,
+      },
+    },
+  ]);
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      projects,
+      "Projects fetched successfully"
     )
-    return res.status(200)
-        .json(new ApiResponse(200, projects, "Projects fetched successfuly"))
-})
+  );
+});
+
+
 const getProjectById = asyncHandler(async (req, res) => {
     const { projectId } = req.params
     const project = await Project.findById(projectId)
@@ -83,7 +155,7 @@ const createProject = asyncHandler(async (req, res) => {
         deadline: deadline || null,
         createdBy: new mongoose.Types.ObjectId(req.user._id),
     })
-    await projectMember.create(
+    const membership = await projectMember.create(
         {
             user: new mongoose.Types.ObjectId(req.user._id),
             project: new mongoose.Types.ObjectId(project._id),
@@ -94,7 +166,7 @@ const createProject = asyncHandler(async (req, res) => {
     return res
         .status(201)
         .json(
-            new ApiResponse(201, project,"Project Created successfully")
+            new ApiResponse(201, {project, role:membership.role},"Project Created successfully")
         )
 })
 

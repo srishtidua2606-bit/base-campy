@@ -10,7 +10,8 @@ function ProjectCard({projectData}){
     const formattedDate = project?.createdAt? new Date(project.createdAt).toLocaleDateString("en-IN",{
         day: "numeric",
         month: "short",
-        year: "numeric"
+        year: "numeric",
+        timeZone:"Asia/Kolkata"
     }) : "Date Unavailable";
     return(
         <article className = "project-card">

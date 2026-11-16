@@ -291,7 +291,10 @@ function Dashboard() {
   <CreateProjectModal onClose={() => setShowCreateModal(false)}
     onProjectCreated = {(newProject) => {
       setProjects((prevProjects) => [
-        { project: newProject, role : "ADMIN"},
+        { project:{
+          ...newProject,
+          members:1
+        } , role : "ADMIN"},
         ...prevProjects
       ]);
     }}
