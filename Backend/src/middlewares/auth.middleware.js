@@ -35,23 +35,22 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
 export const validateProjectPermission = (roles = []) =>{
  return asyncHandler(async(req, res , next) => {
     const {projectId} = req.params
-
-    if(!projectId){
-      throw new ApiError(400, "project id is missing")
+    
+    if (!mongoose.Types.ObjectId.isValid(projectId)) {
+      throw new ApiError(400, "Invalid project ID");
     }
 
-    const project = await projectMember.findOne({
+    const membership = await projectMember.findOne({
       project : new mongoose.Types.ObjectId(projectId),
       user : new mongoose.Types.ObjectId(req.user._id) 
     })
-    if(!project){
-      throw new ApiError(400, "project not found")
+    if(!membership){
+      throw new ApiError(404, "Project not found or access denied")
     }
 
-    const givenRole = project?.role
-    req.user.role = givenRole
+    req.user.role = membership.role;
 
-    if(!roles.includes(givenRole)) {
+    if(!roles.includes(membership.role)) {
         throw new ApiError('403', "You don not have permission to perform this action.")
     }
 

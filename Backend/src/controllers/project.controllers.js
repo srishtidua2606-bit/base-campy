@@ -137,13 +137,16 @@ const getProjects = asyncHandler(async (req, res) => {
 
 const getProjectById = asyncHandler(async (req, res) => {
     const { projectId } = req.params
-    const project = await Project.findById(projectId)
+    const project = await Project.findById(projectId).populate(
+        "createdBy",
+        "fullName username avatar"
+    );
     if (!project) {
         throw new ApiError(404, "Project not found")
     }
         res.status(200)
             .json(
-                new ApiResponse(200, project, "Project fetched successfully")
+                new ApiResponse(200, {project, role: req.user.role},"Project fetched successfully")
             )
 })
 
