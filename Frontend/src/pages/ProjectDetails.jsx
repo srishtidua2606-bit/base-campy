@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {useNavigate, useParams} from "react-router-dom"
 import useAuth from "../contexts/AuthContext";
+import "./dashboard.css"
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
@@ -48,55 +49,118 @@ function ProjectDetails(){
 
     }, [projectId,authLoading, isAuthenticated])
 
-    if(authLoading || loading){
-        return <p>Loading Project....</p>
-    }
+     if (authLoading || loading) {
+    return (
+      <main className="project-details-page">
+        <div className="project-details-state">
+          <p>Loading project...</p>
+        </div>
+      </main>
+    );
+  }
+
     if (!isAuthenticated) return null;
-    if (error){
-        return (
-            <div>
-                <p role = "alert">{error}</p>
-                <button onClick = {() => navigate("/dashboard")}>
-                    Back to Dashboard
-                </button>
-            </div>
-        );
-    }
-    if (!project){
-        return <p>Project not found:(</p>
-    }
+ if (error) {
+    return (
+      <main className="project-details-page">
+        <div className="project-details-state project-details-error">
+          <h2>Unable to load project</h2>
+          <p>{error}</p>
+          <button
+            className="project-back-button"
+            onClick={() => navigate("/dashboard")}
+          >
+            ← Back to Dashboard
+          </button>
+        </div>
+      </main>
+    );
+  }
+    if (!project) {
+    return (
+      <main className="project-details-page">
+        <div className="project-details-state">
+          <h2>Project not found</h2>
+          <button
+            className="project-back-button"
+            onClick={() => navigate("/dashboard")}
+          >
+            ← Back to Dashboard
+          </button>
+        </div>
+      </main>
+    );
+  }
+  const formattedDate = (date) => 
+    new Date(date).toLocaleDateString("en-IN",{
+        day:"numeric",
+        month:"short",
+        year:"numeric",
+        timeZone:"Asia/Kolkata",
+    });
     return (
         <main className="project-details-page">
-            <button onClick={() => navigate("/dashboard")}>
+            <button className = "project-back-button" onClick={() => navigate("/dashboard")}>
                 ← Back to Dashboard
             </button>
 
-            <section>
-                <span>{projectRole}</span>
+        <section className = "project-details-card">
+            <div className="project-details-header">
+                <div className="project-details-icon">
+                  ✦  
+                </div>
+                <span className = {`project-role ${
+                    projectRole.toLowerCase() ==="admin" ?"role-admin":"role-member"
+                }`}>{projectRole}</span>
 
+            </div>
+
+            <div className="project-details-into">
+                <span className="project-details-intro">
+                    PROJECT OVERVIEW
+                </span>
                 <h1>{project.name}</h1>
-                <p>{project.description || "No description available."}</p>
 
-                <div>
-                    <h3>Project Creator</h3>
-                    <p>
-                        {project.createdBy?.fullName ||
-              project.createdBy?.username ||
-              "Unknown"}
-                    </p>
-                </div>
-                <div>
-                    <h3>Created On</h3>
-                    <p>{new Date(project.createdAt).toLocaleDateString("en-IN")}</p>
-                </div>
+                <p>{project.description || "No description provided."}</p>
+            </div>
+            <div className="project-details-divider"></div>
 
-                <div>
-                    <h3>Deadline</h3>
-                    <p>{
-                        project.deadline? newDate(project.deadline).toLocaleDateString("en-IN"): "No deadline set"}</p>
+            <div className="project-details-information">
+                <div className="project-info-item">
+                    <span className="project-info-icon">♙</span>
+                    <div>
+                          <span className="project-info-label">
+                Project Creator
+              </span>
+              <h3>{project.createdBy?.fullName || project.createdBy?.username|| "Unknown"}</h3>
+                    </div>
                 </div>
-            </section>
-        </main>
+            </div>
+            <div className="project-info-item"> <span className="project-info-icon">▦</span>
+            <div>
+              <span className="project-info-label">
+                Created On
+              </span>
+              <h3>{formattedDate(project.createdAt)}</h3>
+            </div>
+
+
+         <div className="project-info-item">
+            <span className="project-info-icon">◷</span>
+            <div>
+              <span className="project-info-label">
+                Deadline
+              </span>
+              <h3>
+                {project.deadline
+                  ? formattedDate(project.deadline)
+                  : "No deadline set"}
+              </h3>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
     )
 
 }

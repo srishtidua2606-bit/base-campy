@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import VerifyEmail from "./pages/VerifyEmail";
 import AuthProvider from "./contexts/AuthProvider";
 import Dashboard from "./pages/Dashboard";
+import ProjectDetails from "./pages/ProjectDetails";
 
 const features = [
   {
@@ -359,6 +360,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/verify-email/:token" element={<VerifyEmail />} />
         <Route path = "/dashboard" element = {<Dashboard/>}  />
+        <Route path ="/projects/:projectId" element = {<ProjectDetails />}/>
         <Route
           path="*"
           element={
