@@ -1,5 +1,4 @@
 function ProjectCard({projectData}){
-    console.log(projectData)
     const project = projectData.project;
     const role = projectData.role || "Member"
     const projectName = project?.name || "Untitled Project";
@@ -14,6 +13,8 @@ function ProjectCard({projectData}){
         timeZone:"Asia/Kolkata"
     }) : "Date Unavailable";
     return(
+
+        <Link to ={`/projects/${project._id}`} className = "project-card-link" >
         <article className = "project-card">
             <div className = "project-card-top">
                 <div className = "project-card-icon" aria-hidden="true">
@@ -28,6 +29,7 @@ function ProjectCard({projectData}){
                 <h3>{projectName}</h3>
                 <p>{description}</p>
             </div>
+
             <div className = " project-card-footer">
                  <span>
           <span aria-hidden="true">♧</span>
@@ -36,6 +38,7 @@ function ProjectCard({projectData}){
         <span>Created {formattedDate}</span>
             </div>
         </article>
+        </Link>
     )
 }
 export default ProjectCard;
